@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,7 +59,7 @@ public class RestApiController {
 
 	// -------------------Create a User-------------------------------------------
 
-	@RequestMapping(value = "/user/", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/", method = RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
 		logger.info("Creating User : {}", user);
 
@@ -183,6 +184,7 @@ public class RestApiController {
 		}
 
 		currentGroup.setName(group.getName());
+		currentGroup.setUsers(group.getUsers());
 
 		groupService.updateGroup(currentGroup);
 		return new ResponseEntity<Group>(currentGroup, HttpStatus.OK);

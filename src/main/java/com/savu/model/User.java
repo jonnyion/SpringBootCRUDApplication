@@ -2,8 +2,15 @@ package com.savu.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name="APP_USER")
@@ -20,8 +27,12 @@ public class User implements Serializable{
 	@Column(name="EMAIL", nullable=false)
 	private String email;
 
-	@Column(name="GROUPS", nullable=false)
-	private String groups;
+	@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "APP_USER_GROUP", 
+             joinColumns = { @JoinColumn(name = "USER_ID") }, 
+             inverseJoinColumns = { @JoinColumn(name = "GROUP_ID") })
+	@JsonIgnore
+	private Set<Group> groups;
 
 	public Long getId() {
 		return id;
@@ -47,12 +58,11 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-
-	public String getGroups() {
+	public Set<Group> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(String groups) {
+	public void setGroups(Set<Group> groups) {
 		this.groups = groups;
 	}
 

@@ -14,6 +14,7 @@ angular.module('crudApp').controller('UserController',
         self.removeUser = removeUser;
         self.editUser = editUser;
         self.reset = reset;
+        self.getCommaGroups = getCommaGroups
 
         self.successMessage = '';
         self.errorMessage = '';
@@ -109,6 +110,10 @@ angular.module('crudApp').controller('UserController',
             self.errorMessage='';
             self.user={};
             $scope.myForm.$setPristine(); //reset Form
+        }
+        
+        function getCommaGroups( user ){
+        	return user.groups.toString();
         }
     }
 
